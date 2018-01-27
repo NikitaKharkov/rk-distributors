@@ -1,0 +1,34 @@
+version: "3.3"
+
+services:
+  php:
+    container_name: rk-php
+    build: docker/php
+    restart: always
+    networks:
+      - rk
+    volumes:
+      - .:/var/www/rk-dis
+
+  nginx:
+    container_name: rk-nginx
+    build: docker/nginx
+    restart: always
+    networks:
+      - rk
+    ports:
+      - 80:80
+
+  mysql:
+    container_name: rk-mysql
+    image: mysql:5.7
+    restart: always
+    networks:
+      - rk
+    ports:
+      - 3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: "root"
+
+networks:
+  rk:
