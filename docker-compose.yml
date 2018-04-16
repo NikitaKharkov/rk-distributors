@@ -1,7 +1,16 @@
 version: "3.3"
 
 services:
-  php:
+
+  node-rk:
+    image: node:6.10
+    container_name: rk-node
+    volumes:
+      - ./app:/var/www/rk-dis
+    working_dir: /var/www/rk-dis
+    tty: true
+
+  php-rk:
     container_name: rk-php
     build: docker/php
     restart: always
@@ -10,23 +19,25 @@ services:
     volumes:
       - .:/var/www/rk-dis
 
-  nginx:
+  nginx-rk:
     container_name: rk-nginx
     build: docker/nginx
     restart: always
+    volumes:
+      - .:/var/www/rk-dis
     networks:
       - rk
     ports:
-      - 80:80
+      - 8080:80
 
-  mysql:
+  mysql-rk:
     container_name: rk-mysql
-    image: mysql:5.7
+    image: mariadb:10.3
     restart: always
     networks:
       - rk
     ports:
-      - 3306:3306
+      - 3301:3306
     environment:
       MYSQL_ROOT_PASSWORD: "root"
 
